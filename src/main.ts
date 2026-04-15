@@ -1,11 +1,25 @@
 import { Component, signal } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 
-// for 'ngModel'
+// for "ngModel"
 import { FormsModule } from '@angular/forms';
 
 // for "ngIf" and "ngFor"
 import { CommonModule } from '@angular/common';
+
+// for decor. "Injectable"
+import {Injectable} from "@angular/core"
+
+
+// service example
+@Injectable({providedIn: "root"})
+export class DataService
+{
+  getGuests(list: string[]=[]){
+    return list; // example of data - list
+  }
+  
+}
 
 @Component({
   selector: 'app-root',
@@ -33,6 +47,22 @@ import { CommonModule } from '@angular/common';
 
     <p>Hello on Angular, {{name}}!</p>
 
+    <button (click)="import()">Import Guests: </button>
+
+    <p *ngIf="ifSuccess" style="color: green";>
+      Import status: Success
+    </p>
+
+    <p *ngIf="ifFail" style="color: red";>
+      Import status: Fail
+    </p>
+
+    <ul>
+      <li *ngFor="let guest of listOfGuests">
+        {{guest}}
+      </li>
+    </ul>
+
     <h2> TO DO LIST: </h2>
 
     <input type="text" [(ngModel)]="newTask" placeholder="What's next?">
@@ -57,6 +87,10 @@ export class App {
   listOfTasks: string[] = ['Task 1', 'Task 2'];
   error: boolean = false;
 
+  listOfGuests: string[] = [];
+  ifFail: boolean = false;
+  ifSuccess: boolean = false;
+
   addTask() {
     if (this.newTask.trim() !== '') {
       this.listOfTasks.push(this.newTask);
@@ -65,6 +99,26 @@ export class App {
       this.error = false;
     } else {
       this.error = true;
+    }
+  }
+
+  constructor(private dataService: DataService){}
+
+  listExample1 = ["Anne", "Bart", "Chester", "David"];
+
+  import()
+  {
+    this.listOfGuests = this.dataService.getGuests(this.listExample);
+
+    if(this.listOfGuests.length > 0)
+    {
+      this.ifFail = false;
+      this.ifSuccess = true;
+    }
+    else
+    {
+      this.ifFail = true;
+      this.ifSuccess = false;
     }
   }
 }
