@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 
   template: `
 
-    <h1>-----------Template--------------------</h1>
+    <h1>-----------Template----------------</h1>
 
     <h2>Hello from {{ name }}!</h2>
     <a target="_blank" href="https://angular.dev/overview">
